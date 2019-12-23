@@ -149,8 +149,9 @@ public class Cuenta {
 	/**
 	 * Inserta la cuenta en la base de datos
 	 * @throws CuentaSinTitularesException	Si no se ha asignado ningún titular a la cuenta
+	 * @throws CuentaYaCreadaException Si existe una cuenta con el mismo ID
 	 */
-	public void insert() throws CuentaSinTitularesException {
+	public void insert() throws CuentaSinTitularesException, CuentaYaCreadaException {
 		if (this.titulares.isEmpty())
 			throw new CuentaSinTitularesException();
 		//Correccion de issue #6
