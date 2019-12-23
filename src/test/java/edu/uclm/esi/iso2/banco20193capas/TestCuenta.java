@@ -344,6 +344,9 @@ public class TestCuenta extends TestCase {
 			cuentaNueva.insert();
 			fail("Esperaba CuentaSinTitularesException");
 		} catch (CuentaSinTitularesException e) {
+		} catch (CuentaYaCreadaException e) {
+			//a raiz de la correccion del issue #6
+			fail("Esperaba CuentaSinTitularesException en lugar de CuentaYaCreadaException");
 		}
 	}
 

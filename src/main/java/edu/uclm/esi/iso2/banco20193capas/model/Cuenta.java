@@ -153,6 +153,10 @@ public class Cuenta {
 	public void insert() throws CuentaSinTitularesException {
 		if (this.titulares.isEmpty())
 			throw new CuentaSinTitularesException();
+		//Correccion de issue #6
+		Optional<Cuenta> optCuenta = Manager.getCuentaDAO().findById(this.id);
+		if (optCuenta.isPresent())
+			throw new CuentaYaCreadaException();
 		this.creada = true;
 		Manager.getCuentaDAO().save(this);
 	}
