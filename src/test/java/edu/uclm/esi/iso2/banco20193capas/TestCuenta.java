@@ -263,7 +263,7 @@ public class TestCuenta extends TestCase {
 			fail("Se ha lanzado una excepción inesperada: " + e);
 		} catch (SaldoInsuficienteException e) {
 			System.out
-					.println("testTransferenciaSaldoSuficienteSinComision - Saldo restante: " + cuentaPepe.getSaldo());
+			.println("testTransferenciaSaldoSuficienteSinComision - Saldo restante: " + cuentaPepe.getSaldo());
 			assertEquals(1000.0, cuentaPepe.getSaldo());
 		}
 	}
@@ -423,6 +423,20 @@ public class TestCuenta extends TestCase {
 			assertEquals(saldoPepe, cuentaPepe.getSaldo());
 		}
 
+	}
+	@Test
+	public void test_saldoInsuficienteConComision(){
+		double transferencia=1000.0;
+		try {
+			this.cuentaPepe.transferir(this.cuentaAna.getId(), transferencia, "Ordenador nuevo");
+			fail("Se esperaba SaldoInsuficienteException");
+
+		}catch(SaldoInsuficienteException e) {
+
+
+		}catch(Exception e) {
+			fail("Se esperaba SaldoInsuficienteException");
+		}
 	}
 
 }

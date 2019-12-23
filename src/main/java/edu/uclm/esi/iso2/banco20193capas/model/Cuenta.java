@@ -112,10 +112,16 @@ public class Cuenta {
 	 * @throws SaldoInsuficienteException	Si la cuenta no tiene saldo suficiente para afrontar el importe y la comisión
 	 */
 	public void transferir(Long numeroCuentaDestino, double importe, String concepto) throws CuentaInvalidaException, ImporteInvalidoException, SaldoInsuficienteException {
-		if (this.getId().equals(numeroCuentaDestino))
+		if (this.getId().equals(numeroCuentaDestino))  
 			throw new CuentaInvalidaException(numeroCuentaDestino);
-		this.retirar(importe, "Transferencia emitida");
+		Optional<Cuenta> optCuenta = Manager.getCuentaDAO().findById(numeroCuentaDestino);
+		if (!optCuenta.isPresent())	
+			throw new CuentaInvalidaException(numeroCuentaDestino);
 		double comision = Math.max(0.01*importe, 1.5);
+		if(this.getSaldo()<importe+comision)
+			throw new SaldoInsuficienteException();
+		this.retirar(importe, "Transferencia emitida");
+		
 		this.retirar(comision, "Comisión por transferencia");
 		Cuenta destino = this.load(numeroCuentaDestino);
 		destino.ingresar(importe, "Transferencia recibida");
