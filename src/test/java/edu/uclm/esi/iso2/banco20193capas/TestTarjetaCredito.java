@@ -13,7 +13,7 @@ import edu.uclm.esi.iso2.banco20193capas.exceptions.TarjetaBloqueadaException;
 import edu.uclm.esi.iso2.banco20193capas.exceptions.TokenInvalidoException;
 import edu.uclm.esi.iso2.banco20193capas.model.Cliente;
 import edu.uclm.esi.iso2.banco20193capas.model.Cuenta;
-import edu.uclm.esi.iso2.banco20193capas.model.Manager;
+import edu.uclm.esi.iso2.banco20193capas.model.ManagerHelper;
 import edu.uclm.esi.iso2.banco20193capas.model.TarjetaCredito;
 import junit.framework.TestCase;
 
@@ -26,12 +26,12 @@ public class TestTarjetaCredito extends TestCase {
 
 	@Before
 	public void setUp() {
-		Manager.getMovimientoDAO().deleteAll();
-		Manager.getMovimientoTarjetaCreditoDAO().deleteAll();
-		Manager.getTarjetaCreditoDAO().deleteAll();
-		Manager.getTarjetaDebitoDAO().deleteAll();
-		Manager.getCuentaDAO().deleteAll();
-		Manager.getClienteDAO().deleteAll();
+		ManagerHelper.getMovimientoDAO().deleteAll();
+		ManagerHelper.getMovimientoTarjetaCreditoDAO().deleteAll();
+		ManagerHelper.getTarjetaCreditoDAO().deleteAll();
+		ManagerHelper.getTarjetaDebitoDAO().deleteAll();
+		ManagerHelper.getCuentaDAO().deleteAll();
+		ManagerHelper.getClienteDAO().deleteAll();
 
 		this.pepe = new Cliente("12345X", "Pepe", "Pérez");
 		this.pepe.insert();
