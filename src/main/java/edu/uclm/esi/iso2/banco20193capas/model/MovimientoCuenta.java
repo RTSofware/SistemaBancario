@@ -43,14 +43,17 @@ public class MovimientoCuenta {
 
 	/**
 	 * Crea un movimiento.
-	 * @param cuentaMovi   del movimiento
-	 * @param importeMovi  del movimiento
-	 * @param conceptoMovi del movimiento
+	 * @param cuentaMovimiento   del movimiento
+	 * @param importeMovimiento  del movimiento
+	 * @param conceptoMovimiento del movimiento
 	 */
-	public MovimientoCuenta(final Cuenta cuentaMovi, final double importeMovi, final String conceptoMovi) {
-		this.importe = importeMovi;
-		this.concepto = conceptoMovi;
-		this.cuenta = cuentaMovi;
+	public MovimientoCuenta(
+			final Cuenta cuentaMovimiento,
+			final double importeMovimiento,
+			final String conceptoMovimiento) {
+		this.importe = importeMovimiento;
+		this.concepto = conceptoMovimiento;
+		this.cuenta = cuentaMovimiento;
 	}
 
 	/**

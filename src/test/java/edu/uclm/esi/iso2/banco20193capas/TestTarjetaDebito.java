@@ -23,7 +23,7 @@ public class TestTarjetaDebito extends TestCase {
 	private Cuenta cuentaPepe, cuentaAna;
 	private Cliente pepe, ana;
 	private TarjetaDebito tdPepe, tdAna;
-	
+
 	@Before
 	public void setUp() {
 		ManagerHelper.getMovimientoDAO().deleteAll();
@@ -32,36 +32,35 @@ public class TestTarjetaDebito extends TestCase {
 		ManagerHelper.getTarjetaDebitoDAO().deleteAll();
 		ManagerHelper.getCuentaDAO().deleteAll();
 		ManagerHelper.getClienteDAO().deleteAll();
-		
+
 		this.pepe = new Cliente("12345X", "Pepe", "Pérez");
 		this.pepe.insert();
-		
+
 		this.ana = new Cliente("98765F", "Ana", "López");
 		this.ana.insert();
-		
+
 		this.cuentaPepe = new Cuenta(1L);
 		this.cuentaAna = new Cuenta(2L);
-		
+
 		try {
 			this.cuentaPepe.addTitular(pepe);
 			this.cuentaPepe.insert();
 			this.cuentaPepe.ingresar(1000);
-			
+
 			this.cuentaAna.addTitular(ana);
 			this.cuentaAna.insert();
 			this.cuentaAna.ingresar(5000);
-			
+
 			this.tdPepe = this.cuentaPepe.emitirTarjetaDebito(pepe.getNif());
 			this.tdAna = this.cuentaAna.emitirTarjetaDebito(ana.getNif());
-			
+
 			this.tdPepe.cambiarPin(tdPepe.getPin(), 1234);
 			this.tdAna.cambiarPin(tdAna.getPin(), 1234);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			fail("Excepción inesperada en setUp(): " + e);
 		}
 	}
-	
+
 	@Test
 	public void comprarPorInternetBloqueoDeTarjeta() {
 		try {
@@ -90,12 +89,12 @@ public class TestTarjetaDebito extends TestCase {
 			fail("Esperaba TarjetaBloqueadaException");
 		}
 	}
-	
+
 	@Test
 	public void comprarPorInternet_tokenErroneo() {
-		
+
 		int token = 5678;
-		
+
 		try {
 			tdPepe.comprarPorInternet(tdPepe.getPin(), 1000);
 		} catch (TarjetaBloqueadaException e) {
@@ -111,13 +110,13 @@ public class TestTarjetaDebito extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		try {
 			tdPepe.confirmarCompraPorInternet(token);
 			fail("Excepción esperada: (TokenInvalidoException)");
 
 		} catch (TokenInvalidoException e) {
-			assertEquals(1000.0, cuentaPepe.getSaldo());			
+			assertEquals(1000.0, cuentaPepe.getSaldo());
 
 		} catch (ImporteInvalidoException e) {
 			// TODO Auto-generated catch block
@@ -132,7 +131,7 @@ public class TestTarjetaDebito extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}		
+	}
 
 	@Test
 	public void comprarPorInternet_exito() {
@@ -172,8 +171,8 @@ public class TestTarjetaDebito extends TestCase {
 			e.printStackTrace();
 		}
 		assertEquals(0.0, cuentaPepe.getSaldo());
-	}	
-	
+	}
+
 	@Test
 	public void comprar_bloqueoDeTarjeta() {
 		try {
@@ -202,10 +201,10 @@ public class TestTarjetaDebito extends TestCase {
 			fail("Esperaba TarjetaBloqueadaException");
 		}
 	}
-	
+
 	@Test
 	public void comprar_saldoInsuficiente() {
-		
+
 		try {
 			this.tdPepe.comprar(1234, 3000);
 			fail("Excepción esperada: SaldoInsuficienteException");
@@ -222,16 +221,16 @@ public class TestTarjetaDebito extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}		
+	}
 
 	@Test
 	public void comprar_importeInvalido() {
-		
+
 		try {
 			this.tdPepe.comprar(1234, -1);
 			fail("Excepción esperada: ImporteInvalidoException");
 		} catch (ImporteInvalidoException e) {
-			assertEquals(1000.0,  cuentaPepe.getSaldo());
+			assertEquals(1000.0, cuentaPepe.getSaldo());
 
 		} catch (SaldoInsuficienteException e) {
 			e.printStackTrace();
@@ -243,7 +242,7 @@ public class TestTarjetaDebito extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}	
+	}
 
 	@Test
 	public void comprar_exito() {
@@ -266,17 +265,17 @@ public class TestTarjetaDebito extends TestCase {
 
 		assertEquals(0.0, cuentaPepe.getSaldo());
 	}
-	
+
 	@Test
 	public void sacarDinero_importeInvalido() {
-		
+
 		try {
 			tdPepe.sacarDinero(1234, -1);
 			fail("Excepción esperada: (ImporteInvalidoException)");
 
 		} catch (ImporteInvalidoException e) {
 			assertEquals(1000.0, cuentaPepe.getSaldo());
-			
+
 		} catch (SaldoInsuficienteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -288,10 +287,10 @@ public class TestTarjetaDebito extends TestCase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void sacarDinero_exito() {
-		
+
 		try {
 			tdPepe.sacarDinero(tdPepe.getPin(), 1000.0);
 			assertEquals(0.0, cuentaPepe.getSaldo());
@@ -310,23 +309,23 @@ public class TestTarjetaDebito extends TestCase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void cambiarPin_error() {
-		int pin_nuevo=3456;
-		
+		int pin_nuevo = 3456;
+
 		try {
 			tdPepe.cambiarPin(pin_nuevo, pin_nuevo);
 			fail("Excepción esperada: (PinInvalidoException)");
 		} catch (PinInvalidoException e) {
 			assertTrue(1234 == tdPepe.getPin());
 		}
-	}	
-	
+	}
+
 	@Test
 	public void cambiarPin_exito() {
-		int pin_nuevo=3456;
-		
+		int pin_nuevo = 3456;
+
 		try {
 			tdPepe.cambiarPin(tdPepe.getPin(), pin_nuevo);
 			assertTrue(pin_nuevo == tdPepe.getPin());
@@ -334,7 +333,6 @@ public class TestTarjetaDebito extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}	
-	
-	
+	}
+
 }

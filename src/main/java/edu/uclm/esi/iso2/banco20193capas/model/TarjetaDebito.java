@@ -9,57 +9,74 @@ import edu.uclm.esi.iso2.banco20193capas.exceptions.PinInvalidoException;
 import edu.uclm.esi.iso2.banco20193capas.exceptions.SaldoInsuficienteException;
 import edu.uclm.esi.iso2.banco20193capas.exceptions.TarjetaBloqueadaException;
 
+/**
+ * The Class TarjetaDebito.
+ */
 @Entity
 public class TarjetaDebito extends Tarjeta {
 
 	/**
-	 * Permite sacar dinero del cajero automático.
+	 * Permite sacar dinero del cajero automatico.
 	 * @param pin     El pin que introduce el usuario
 	 * @param importe El {@code importe} que desea sacar
 	 * @throws ImporteInvalidoException   Si el {@code importe<=0}
 	 * @throws SaldoInsuficienteException Si el saldo de la cuenta asociada
-	 *                                    ({@link edu.uclm.esi.iso2.banco20193capas.model.Cuenta#getSaldo()
-	 *                                    Cuenta.getSaldo()}) a la tarjeta es menor
-	 *                                    que el importe
-	 * @throws TarjetaBloqueadaException  Si la tarjeta está bloqueada
-	 * @throws PinInvalidoException       Si el pin introducido es distinto del pin
-	 *                                    de la tarjeta
+	 * ({@link edu.uclm.esi.iso2.banco20193capas.model.Cuenta#getSaldo()
+	 * Cuenta.getSaldo()}) a la tarjeta es menor que el importe
+	 * @throws TarjetaBloqueadaException  Si la tarjeta esta bloqueada
+	 * @throws PinInvalidoException       Si el pin introducido es distinto
+	 * del pin de la tarjeta
 	 */
 	@Override
-	public void sacarDinero(final int pin, final double importe) throws ImporteInvalidoException, SaldoInsuficienteException,
-			TarjetaBloqueadaException, PinInvalidoException {
+	public void sacarDinero(final int pin, final double importe)
+			throws
+			ImporteInvalidoException,
+			SaldoInsuficienteException,
+			TarjetaBloqueadaException,
+			PinInvalidoException {
+
 		comprobar(pin);
-		this.intentos = 0;
-		this.cuenta.retirar(importe);
+		this.setIntentos(0);
+		this.getCuenta().retirar(importe);
 	}
 
 	/**
-	 * Inicia una compra por Internet, que debe confirmarse después (ver
-	 * {@link #confirmarCompraPorInternet(int)}) mediante el token que devuelve este
-	 * método.
+	 * Inicia una compra por Internet, que debe confirmarse despues (ver
+	 * {@link #confirmarCompraPorInternet(int)}) mediante el token que
+	 * devuelve este metodo.
 	 * @param pin     El pin que introduce el usuario
 	 * @param importe El importe de la compra
 	 * @return Un token que debe introducirse en
 	 *         {@link #confirmarCompraPorInternet(int)}
-	 * @throws TarjetaBloqueadaException  Si la tarjeta está bloqueada
-	 * @throws PinInvalidoException       Si el pin introducido es distinto del pin
-	 *                                    de la tarjeta
-	 * @throws SaldoInsuficienteException Si el saldo de la cuenta asociada a la
-	 *                                    tarjeta es menor que el importe
+	 * @throws TarjetaBloqueadaException  Si la tarjeta esta bloqueada
+	 * @throws PinInvalidoException       Si el pin introducido es distinto
+	 * del pin de la tarjeta
+	 * @throws SaldoInsuficienteException Si el saldo de la cuenta asociada
+	 * a la tarjeta es menor que el importe
 	 * @throws ImporteInvalidoException   Si el importe{@literal <}=0
 	 */
 	@Override
-	public Integer comprarPorInternet(final int pin, final double importe) throws TarjetaBloqueadaException, PinInvalidoException,
-			SaldoInsuficienteException, ImporteInvalidoException {
+	public Integer comprarPorInternet(final int pin, final double importe)
+			throws
+			TarjetaBloqueadaException,
+			PinInvalidoException,
+			SaldoInsuficienteException,
+			ImporteInvalidoException {
+
+		final int maxDigitosPin = 3;
+		final int decimalNumber = 10;
+		final int defaultToken = 1234;
+
 		comprobar(pin);
-		this.intentos = 0;
+		this.setIntentos(0);
 		SecureRandom dado = new SecureRandom();
 		int token = 0;
-		for (int i = 0; i <= 3; i++) {
-			token = (int) (token + dado.nextInt(10) * Math.pow(10, i));
+		for (int i = 0; i <= maxDigitosPin; i++) {
+			token = (int) (token + dado.nextInt(decimalNumber)
+			* Math.pow(decimalNumber, i));
 		}
-		token = 1234;
-		this.compra = new Compra(importe, token);
+		token = defaultToken;
+		this.setCompra(new Compra(importe, token));
 		return token;
 	}
 
@@ -69,31 +86,47 @@ public class TarjetaDebito extends Tarjeta {
 	 * @param importe El importe de la compra
 	 * @throws ImporteInvalidoException   Si el importe{@literal <}=0
 	 * @throws SaldoInsuficienteException Si el saldo de la cuenta asociada
-	 *                                    ({@link Cuenta#getSaldo()}) a la tarjeta
-	 *                                    es menor que el importe
-	 * @throws TarjetaBloqueadaException  Si la tarjeta está bloqueada
-	 * @throws PinInvalidoException       Si el pin introducido es incorrecto
+	 *                                    ({@link Cuenta#getSaldo()})
+	 * a la tarjeta es menor que el importe
+	 * @throws TarjetaBloqueadaException  Si la tarjeta esta bloqueada
+	 * @throws PinInvalidoException       Si el pin introducido es
+	 * incorrecto
 	 */
 	@Override
-	public void comprar(final int pin,final double importe) throws ImporteInvalidoException, SaldoInsuficienteException,
-			TarjetaBloqueadaException, PinInvalidoException {
+	public void comprar(final int pin, final double importe)
+			throws
+			ImporteInvalidoException,
+			SaldoInsuficienteException,
+			TarjetaBloqueadaException,
+			PinInvalidoException {
+
 		comprobar(pin);
-		this.intentos = 0;
-		this.cuenta.retirar(importe);
+		this.setIntentos(0);
+		this.getCuenta().retirar(importe);
 	}
 
+	/**
+	 * Bloquear.
+	 */
 	@Override
 	protected void bloquear() {
-		this.activa = false;
+		this.setActiva(false);
 		ManagerHelper.getTarjetaDebitoDAO().save(this);
 	}
 
+	/**
+	 * Cambiar pin.
+	 * @param pinViejo the pin viejo
+	 * @param pinNuevo the pin nuevo
+	 * @throws PinInvalidoException the pin invalido exception
+	 */
 	@Override
-	public void cambiarPin(final int pinViejo, final int pinNuevo) throws PinInvalidoException {
-		if (this.pin != pinViejo) {
+	public void cambiarPin(final int pinViejo, final int pinNuevo)
+			throws PinInvalidoException {
+		if (this.getPin() != pinViejo) {
 			throw new PinInvalidoException();
 		}
-		this.pin = pinNuevo;
+		this.setPin(pinNuevo);
 		ManagerHelper.getTarjetaDebitoDAO().save(this);
 	}
 }

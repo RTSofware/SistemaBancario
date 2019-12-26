@@ -47,8 +47,9 @@ public class Cliente {
 	 * @param nombreCliente    Nombre del cliente
 	 * @param apellidosCliente Apellidos del cliente
 	 */
-	public Cliente(final String nifCliente, final String nombreCliente, 
-					final String apellidosCliente) {
+	public Cliente(final String nifCliente,
+			final String nombreCliente,
+			final String apellidosCliente) {
 		this.nif = nifCliente;
 		this.nombre = nombreCliente;
 		this.apellidos = apellidosCliente;

@@ -23,16 +23,16 @@ import edu.uclm.esi.iso2.banco20193capas.exceptions.SaldoInsuficienteException;
  */
 @Entity
 public class Cuenta {
-	@Id
 	/**
 	 * Identificador de la Cuenta.
 	 */
-	protected Long id;
+	@Id
+	private Long id;
 
-	@ManyToMany(fetch = FetchType.EAGER)
 	/**
-	 * Titulares de la Cuenta
+	 * Titulares de la Cuenta.
 	 */
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Cliente> titulares;
 	/**
 	 * Boolean Creada.
@@ -64,11 +64,13 @@ public class Cuenta {
 	}
 
 	/**
-	 * Añade un cliente a la lista de titulares de esta cuenta.
-	 * @param cliente El cliente que se añade a la lista de titulares
-	 * @throws CuentaYaCreadaException Si la cuenta ya se ha almacenado en la BBDD
+	 * Incluye un cliente a la lista de titulares de esta cuenta.
+	 * @param cliente El cliente que se incluye a la lista de titulares
+	 * @throws CuentaYaCreadaException Si la cuenta ya se ha almacenado
+	 * en la BBDD
 	 */
-	public void addTitular(final Cliente cliente) throws CuentaYaCreadaException {
+	public void addTitular(final Cliente cliente)
+			throws CuentaYaCreadaException {
 		if (creada) {
 			throw new CuentaYaCreadaException();
 		}
@@ -80,7 +82,8 @@ public class Cuenta {
 	 * @param importe El importe que se ingresa
 	 * @throws ImporteInvalidoException Si el importe es {@literal <}=0
 	 */
-	public void ingresar(final double importe) throws ImporteInvalidoException {
+	public void ingresar(final double importe)
+			throws ImporteInvalidoException {
 		this.ingresar(importe, "Ingreso de efectivo");
 	}
 
@@ -90,21 +93,28 @@ public class Cuenta {
 	 * @param concepto Concepto del ingreso
 	 * @throws ImporteInvalidoException Si el importe es {@literal <}=0
 	 */
-	private void ingresar(final double importe, final String concepto) throws ImporteInvalidoException {
+	private void ingresar(final double importe,
+			final String concepto) throws ImporteInvalidoException {
 		if (importe <= 0) {
 			throw new ImporteInvalidoException(importe);
 		}
-		final MovimientoCuenta movimiento = new MovimientoCuenta(this, importe, concepto);
+		final MovimientoCuenta movimiento =
+				new MovimientoCuenta(this, importe, concepto);
 		ManagerHelper.getMovimientoDAO().save(movimiento);
 	}
 
 	/**
 	 * Realiza una retirada de la cuenta.
 	 * @param importe El importe que se retira
-	 * @throws ImporteInvalidoException   Si el importe es {@literal <}=0
-	 * @throws SaldoInsuficienteException Si el importe{@literal >}getSaldo()
+	 * @throws ImporteInvalidoException
+	 * Si el importe es {@literal <}=0
+	 * @throws SaldoInsuficienteException
+	 * Si el importe{@literal >}getSaldo()
 	 */
-	public void retirar(final double importe) throws ImporteInvalidoException, SaldoInsuficienteException {
+	public void retirar(final double importe)
+			throws
+			ImporteInvalidoException,
+			SaldoInsuficienteException {
 		this.retirar(importe, "Retirada de efectivo");
 	}
 
@@ -112,49 +122,67 @@ public class Cuenta {
 	 * Realiza una retirada de la cuenta.
 	 * @param importe  El importe que se retira
 	 * @param concepto Concepto de la retirada
-	 * @throws ImporteInvalidoException   Si el importe es {@literal <}=0
-	 * @throws SaldoInsuficienteException Si el importe{@literal >}getSaldo()
+	 * @throws ImporteInvalidoException
+	 * Si el importe es {@literal <}=0
+	 * @throws SaldoInsuficienteException
+	 * Si el importe{@literal >}getSaldo()
 	 */
 	private void retirar(final double importe, final String concepto)
-			throws ImporteInvalidoException, SaldoInsuficienteException {
+			throws ImporteInvalidoException,
+			SaldoInsuficienteException {
 		if (importe <= 0) {
 			throw new ImporteInvalidoException(importe);
 		}
 		if (importe > getSaldo()) {
 			throw new SaldoInsuficienteException();
 		}
-		final MovimientoCuenta movimiento = new MovimientoCuenta(this, -importe, concepto);
+		final MovimientoCuenta movimiento =
+				new MovimientoCuenta(this, -importe, concepto);
 		ManagerHelper.getMovimientoDAO().save(movimiento);
 	}
 
 	/**
-	 * Retira el importe de la cuenta, incluso aunque esta no tenga saldo suficiente.
+	 * Retira el importe de la cuenta, incluso aunque esta no tenga saldo
+	 * suficiente.
 	 * @param importe  El importe que se retira
 	 * @param concepto El concepto del movimiento
 	 */
-	public void retiroForzoso(final double importe, final String concepto) {
-		final MovimientoCuenta movimiento = new MovimientoCuenta(this, -importe, concepto);
+	public void retiroForzoso(
+			final double importe,
+			final String concepto) {
+		final MovimientoCuenta movimiento =
+				new MovimientoCuenta(this, -importe, concepto);
 		ManagerHelper.getMovimientoDAO().save(movimiento);
 	}
 
 	/**
-	 * Realiza una transferencia desde esta cuenta a la cuenta que se pasa como
-	 * primer parámetro. Se cobra una comisión del 1%, con un mínimo de 1.5 euros.
+	 * Realiza una transferencia desde esta cuenta a la cuenta que se pasa
+	 * como primer parametro. Se cobra una comision del 1%, con un minimo
+	 * de 1.5.
 	 * @param idCuentaDestino El identificador de la cuenta destino
 	 * @param importe         El importe que se transfiere
 	 * @param concepto        El concepto de la transferencia
-	 * @throws CuentaInvalidaException    Si la cuenta destino es esta misma o no
-	 *                                    existe en la BD
+	 * @throws CuentaInvalidaException    Si la cuenta destino es esta
+	 *                                    misma o no existe en la BD
 	 * @throws ImporteInvalidoException   Si el importe es {@literal <}=0
-	 * @throws SaldoInsuficienteException Si la cuenta no tiene saldo suficiente
-	 *                                    para afrontar el importe y la comisión
+	 * @throws SaldoInsuficienteException Si la cuenta no tiene saldo
+	 *                                    suficiente para afrontar el
+	 *                                    importe y la comision
 	 */
-	public void transferir(final Long idCuentaDestino, final double importe, final String concepto)
-			throws CuentaInvalidaException, ImporteInvalidoException, SaldoInsuficienteException {
+	public void transferir(
+			final Long idCuentaDestino,
+			final double importe,
+			final String concepto)
+			throws
+			CuentaInvalidaException,
+			ImporteInvalidoException,
+			SaldoInsuficienteException {
 		if (this.getId().equals(idCuentaDestino)) {
 			throw new CuentaInvalidaException(idCuentaDestino);
 		}
-		final Optional<Cuenta> optCuenta = ManagerHelper.getCuentaDAO().findById(idCuentaDestino);
+		final Optional<Cuenta> optCuenta =
+				ManagerHelper.getCuentaDAO().
+				findById(idCuentaDestino);
 		if (!optCuenta.isPresent()) {
 			throw new CuentaInvalidaException(idCuentaDestino);
 		}
@@ -164,7 +192,7 @@ public class Cuenta {
 		}
 		this.retirar(importe, "Transferencia emitidentificadora");
 
-		this.retirar(comision, "Comisión por transferencia");
+		this.retirar(comision, "Comision por transferencia");
 		final Cuenta destino = this.load(idCuentaDestino);
 		destino.ingresar(importe, "Transferencia recibidentificadora");
 	}
@@ -176,7 +204,8 @@ public class Cuenta {
 	 * @throws CuentaInvalidaException Si la cuenta no existe
 	 */
 	private Cuenta load(final Long numero) throws CuentaInvalidaException {
-		final Optional<Cuenta> optCuenta = ManagerHelper.getCuentaDAO().findById(numero);
+		final Optional<Cuenta> optCuenta =
+				ManagerHelper.getCuentaDAO().findById(numero);
 		if (!optCuenta.isPresent()) {
 			throw new CuentaInvalidaException(numero);
 		}
@@ -188,7 +217,9 @@ public class Cuenta {
 	 * @return El saldo de la cuenta
 	 */
 	public double getSaldo() {
-		final List<MovimientoCuenta> listaMovimientos = ManagerHelper.getMovimientoDAO().findByCuentaId(this.id);
+		final List<MovimientoCuenta> listaMovimientos =
+				ManagerHelper.getMovimientoDAO().
+				findByCuentaId(this.id);
 		double saldo = 0.0;
 		for (final MovimientoCuenta movimiento : listaMovimientos) {
 			saldo = saldo + movimiento.getImporte();
@@ -198,17 +229,20 @@ public class Cuenta {
 
 	/**
 	 * Inserta la cuenta en la base de datos.
-	 * @throws CuentaSinTitularesException Si no se ha asignado ningún titular a la
-	 *                                     cuenta
+	 * @throws CuentaSinTitularesException Si no se ha asignado ningun
+	 *                                     titular a la cuenta
 	 * @throws CuentaYaCreadaException     Si existe una cuenta con el mismo
 	 *                                     identificador
 	 */
-	public void insert() throws CuentaSinTitularesException, CuentaYaCreadaException {
+	public void insert() throws
+	CuentaSinTitularesException,
+	CuentaYaCreadaException {
 		if (this.titulares.isEmpty()) {
 			throw new CuentaSinTitularesException();
 		}
 		// Correccion de issue #6
-		final Optional<Cuenta> optCuenta = ManagerHelper.getCuentaDAO().findById(this.id);
+		final Optional<Cuenta> optCuenta =
+				ManagerHelper.getCuentaDAO().findById(this.id);
 		if (optCuenta.isPresent()) {
 			throw new CuentaYaCreadaException();
 		}
@@ -217,18 +251,19 @@ public class Cuenta {
 	}
 
 	/**
-	 * Emite una tarjeta de débito asociada a esta cuenta.
+	 * Emite una tarjeta de debito asociada a esta cuenta.
 	 * @param nif NIF del cliente para el que se emite la tarjeta
-	 * @return La tarjeta de débito (@see
-	 *         {@link edu.uclm.esi.iso2.banco20193capas.model.TarjetaDebito})
-	 * @throws ClienteNoEncontradoException Si el cliente no está en la base de
-	 *                                      datos
-	 * @throws ClienteNoAutorizadoException Si el cliente no es titular de esta
-	 *                                      cuenta
+	 * @return La tarjeta de debito
+	 * @throws ClienteNoEncontradoException Si el cliente no esta en la base
+	 *                                      de datos
+	 * @throws ClienteNoAutorizadoException Si el cliente no es titular de
+	 *                                      esta cuenta
 	 */
 	public TarjetaDebito emitirTarjetaDebito(final String nif)
-			throws ClienteNoEncontradoException, ClienteNoAutorizadoException {
-		final Optional<Cliente> optCliente = ManagerHelper.getClienteDAO().findByNif(nif);
+			throws ClienteNoEncontradoException,
+			ClienteNoAutorizadoException {
+		final Optional<Cliente> optCliente =
+				ManagerHelper.getClienteDAO().findByNif(nif);
 		if (!optCliente.isPresent()) {
 			throw new ClienteNoEncontradoException(nif);
 		}
@@ -251,19 +286,23 @@ public class Cuenta {
 	}
 
 	/**
-	 * Emite una tarjeta de débito asociada a esta cuenta.
+	 * Emite una tarjeta de debito asociada a esta cuenta.
 	 * @param nif     El nif del cliente para el cual se emite esta tarjeta
-	 * @param credito El crédito concedidentificadoro
-	 * @return La tarjeta de crédito (@see
-	 *         {@link edu.uclm.esi.iso2.banco20193capas.model.TarjetaCredito})
-	 * @throws ClienteNoEncontradoException Si el cliente no está en la base de
-	 *                                      datos
-	 * @throws ClienteNoAutorizadoException Si el cliente no es titular de esta
-	 *                                      cuenta
+	 * @param credito El credito concedidentificadoro
+	 * @return La tarjeta de credito
+	 * @throws ClienteNoEncontradoException Si el cliente no esta en la base
+	 *                                      de datos
+	 * @throws ClienteNoAutorizadoException Si el cliente no es titular de
+	 *                                      esta cuenta
 	 */
-	public TarjetaCredito emitirTarjetaCredito(final String nif, final double credito)
-			throws ClienteNoEncontradoException, ClienteNoAutorizadoException {
-		final Optional<Cliente> optCliente = ManagerHelper.getClienteDAO().findByNif(nif);
+	public TarjetaCredito emitirTarjetaCredito(
+			final String nif,
+			final double credito)
+			throws
+			ClienteNoEncontradoException,
+			ClienteNoAutorizadoException {
+		final Optional<Cliente> optCliente =
+				ManagerHelper.getClienteDAO().findByNif(nif);
 		if (!optCliente.isPresent()) {
 			throw new ClienteNoEncontradoException(nif);
 		}
@@ -301,7 +340,7 @@ public class Cuenta {
 	public void setId(final Long identificador) {
 		this.id = identificador;
 	}
-	
+
 	/**
 	 * Getter de los titulares.
 	 * @return lista de titulares
@@ -309,7 +348,7 @@ public class Cuenta {
 	public List<Cliente> getTitulares() {
 		return titulares;
 	}
-	
+
 	/**
 	 * Setter de los titulares.
 	 * @param listaTitulares lista de titulares
@@ -325,7 +364,7 @@ public class Cuenta {
 	public boolean isCreada() {
 		return creada;
 	}
-	
+
 	/**
 	 * Setter de creada.
 	 * @param boolCreada booleano creada

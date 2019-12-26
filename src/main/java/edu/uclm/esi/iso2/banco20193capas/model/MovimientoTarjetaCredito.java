@@ -7,33 +7,35 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
- * Representa un movimiento asociado a una tarjeta de crédito.
+ * Representa un movimiento asociado a una tarjeta de credito.
  */
 @Entity
 public class MovimientoTarjetaCredito {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+
 	/**
 	 * Id del Movimiento.
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@ManyToOne
+
+
 	/**
 	 * Tarjeta del Movimiento.
 	 */
+	@ManyToOne
 	private TarjetaCredito tarjeta;
 
 	/**
 	 * Importe del movimiento.
 	 */
 	private double importe;
-	
+
 	/**
 	 * Concepto del movimiento.
 	 */
 	private String concepto;
-	
+
 	/**
 	 * Booleano liquidado o no el movimiento.
 	 */
@@ -47,14 +49,17 @@ public class MovimientoTarjetaCredito {
 
 	/**
 	 * Crea MovimientoTarjeta.
-	 * @param tarjetaMovi tarjeta del movimiento
-	 * @param importeMovi importe del movimiento
-	 * @param conceptoMovi concepto del movimiento
+	 * @param tarjetaMoviento  tarjeta del movimiento
+	 * @param importeMoviento  importe del movimiento
+	 * @param conceptoMoviento concepto del movimiento
 	 */
-	public MovimientoTarjetaCredito(final TarjetaCredito tarjetaMovi, final double importeMovi, final String conceptoMovi) {
-		this.importe = importeMovi;
-		this.concepto = conceptoMovi;
-		this.tarjeta = tarjetaMovi;
+	public MovimientoTarjetaCredito(
+			final TarjetaCredito tarjetaMoviento,
+			final double importeMoviento,
+			final String conceptoMoviento) {
+		this.importe = importeMoviento;
+		this.concepto = conceptoMoviento;
+		this.tarjeta = tarjetaMoviento;
 	}
 
 	/**
@@ -83,10 +88,10 @@ public class MovimientoTarjetaCredito {
 
 	/**
 	 * Setter de la tarjeta del movimiento.
-	 * @param tarjetaMovi tarjeta de credito del movimiento
+	 * @param tarjetaMovimiento tarjeta de credito del movimiento
 	 */
-	public void setTarjeta(final TarjetaCredito tarjetaMovi) {
-		this.tarjeta = tarjetaMovi;
+	public void setTarjeta(final TarjetaCredito tarjetaMovimiento) {
+		this.tarjeta = tarjetaMovimiento;
 	}
 
 	/**
@@ -99,10 +104,10 @@ public class MovimientoTarjetaCredito {
 
 	/**
 	 * Setter del importe.
-	 * @param importeMovi importe del movimiento
+	 * @param importeMovimiento importe del movimiento
 	 */
-	public void setImporte(final double importeMovi) {
-		this.importe = importeMovi;
+	public void setImporte(final double importeMovimiento) {
+		this.importe = importeMovimiento;
 	}
 
 	/**
@@ -115,14 +120,14 @@ public class MovimientoTarjetaCredito {
 
 	/**
 	 * Setter del concepto.
-	 * @param conceptoMovi concepto del movimiento
+	 * @param conceptoMovimiento concepto del movimiento
 	 */
-	public void setConcepto(final String conceptoMovi) {
-		this.concepto = conceptoMovi;
+	public void setConcepto(final String conceptoMovimiento) {
+		this.concepto = conceptoMovimiento;
 	}
 
 	/**
-	 * Getter liquidado
+	 * Getter liquidado.
 	 * @return booleano de liquidado
 	 */
 	public boolean isLiquidado() {
@@ -130,11 +135,11 @@ public class MovimientoTarjetaCredito {
 	}
 
 	/**
-	 * Setter de liquidado
-	 * @param liquidadoMovi booleanno liquidado
+	 * Setter de liquidado.
+	 * @param liquidadoMovimiento booleanno liquidado
 	 */
-	public void setLiquidado(final boolean liquidadoMovi) {
-		this.liquidado = liquidadoMovi;
+	public void setLiquidado(
+			final boolean liquidadoMovimiento) {
+		this.liquidado = liquidadoMovimiento;
 	}
-
 }

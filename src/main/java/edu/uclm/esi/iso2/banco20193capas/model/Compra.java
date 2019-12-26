@@ -39,7 +39,7 @@ public class Compra {
 	public void setImporte(final double importeCompra) {
 		this.importe = importeCompra;
 	}
-	
+
 	/**
 	 * Getter de token.
 	 * @return token de la compra

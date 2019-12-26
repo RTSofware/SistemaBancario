@@ -263,7 +263,7 @@ public class TestCuenta extends TestCase {
 			fail("Se ha lanzado una excepción inesperada: " + e);
 		} catch (SaldoInsuficienteException e) {
 			System.out
-			.println("testTransferenciaSaldoSuficienteSinComision - Saldo restante: " + cuentaPepe.getSaldo());
+					.println("testTransferenciaSaldoSuficienteSinComision - Saldo restante: " + cuentaPepe.getSaldo());
 			assertEquals(1000.0, cuentaPepe.getSaldo());
 		}
 	}
@@ -345,7 +345,7 @@ public class TestCuenta extends TestCase {
 			fail("Esperaba CuentaSinTitularesException");
 		} catch (CuentaSinTitularesException e) {
 		} catch (CuentaYaCreadaException e) {
-			//a raiz de la correccion del issue #6
+			// a raiz de la correccion del issue #6
 			fail("Esperaba CuentaSinTitularesException en lugar de CuentaYaCreadaException");
 		}
 	}
@@ -427,17 +427,17 @@ public class TestCuenta extends TestCase {
 		}
 
 	}
+
 	@Test
-	public void test_saldoInsuficienteConComision(){
-		double transferencia=1000.0;
+	public void test_saldoInsuficienteConComision() {
+		double transferencia = 1000.0;
 		try {
 			this.cuentaPepe.transferir(this.cuentaAna.getId(), transferencia, "Ordenador nuevo");
 			fail("Se esperaba SaldoInsuficienteException");
 
-		}catch(SaldoInsuficienteException e) {
+		} catch (SaldoInsuficienteException e) {
 
-
-		}catch(Exception e) {
+		} catch (Exception e) {
 			fail("Se esperaba SaldoInsuficienteException");
 		}
 	}
