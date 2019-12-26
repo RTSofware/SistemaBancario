@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import edu.uclm.esi.iso2.banco20193capas.model.Cuenta;
-import edu.uclm.esi.iso2.banco20193capas.model.Manager;
+import edu.uclm.esi.iso2.banco20193capas.model.ManagerHelper;
 import edu.uclm.esi.iso2.banco20193capas.exceptions.ClienteNoAutorizadoException;
 import edu.uclm.esi.iso2.banco20193capas.exceptions.ClienteNoEncontradoException;
 import edu.uclm.esi.iso2.banco20193capas.exceptions.CuentaInvalidaException;
@@ -36,12 +36,12 @@ public class TestCuenta extends TestCase {
 	@Before
 	public void setUp() {
 		// Limpiar BB.DD.
-		Manager.getMovimientoDAO().deleteAll();
-		Manager.getMovimientoTarjetaCreditoDAO().deleteAll();
-		Manager.getTarjetaCreditoDAO().deleteAll();
-		Manager.getTarjetaDebitoDAO().deleteAll();
-		Manager.getCuentaDAO().deleteAll();
-		Manager.getClienteDAO().deleteAll();
+		ManagerHelper.getMovimientoDAO().deleteAll();
+		ManagerHelper.getMovimientoTarjetaCreditoDAO().deleteAll();
+		ManagerHelper.getTarjetaCreditoDAO().deleteAll();
+		ManagerHelper.getTarjetaDebitoDAO().deleteAll();
+		ManagerHelper.getCuentaDAO().deleteAll();
+		ManagerHelper.getClienteDAO().deleteAll();
 
 		// Pin
 		this.pinPepe = 1234;
@@ -263,7 +263,7 @@ public class TestCuenta extends TestCase {
 			fail("Se ha lanzado una excepción inesperada: " + e);
 		} catch (SaldoInsuficienteException e) {
 			System.out
-			.println("testTransferenciaSaldoSuficienteSinComision - Saldo restante: " + cuentaPepe.getSaldo());
+					.println("testTransferenciaSaldoSuficienteSinComision - Saldo restante: " + cuentaPepe.getSaldo());
 			assertEquals(1000.0, cuentaPepe.getSaldo());
 		}
 	}
@@ -345,7 +345,7 @@ public class TestCuenta extends TestCase {
 			fail("Esperaba CuentaSinTitularesException");
 		} catch (CuentaSinTitularesException e) {
 		} catch (CuentaYaCreadaException e) {
-			//a raiz de la correccion del issue #6
+			// a raiz de la correccion del issue #6
 			fail("Esperaba CuentaSinTitularesException en lugar de CuentaYaCreadaException");
 		}
 	}
@@ -427,17 +427,17 @@ public class TestCuenta extends TestCase {
 		}
 
 	}
+
 	@Test
-	public void test_saldoInsuficienteConComision(){
-		double transferencia=1000.0;
+	public void test_saldoInsuficienteConComision() {
+		double transferencia = 1000.0;
 		try {
 			this.cuentaPepe.transferir(this.cuentaAna.getId(), transferencia, "Ordenador nuevo");
 			fail("Se esperaba SaldoInsuficienteException");
 
-		}catch(SaldoInsuficienteException e) {
+		} catch (SaldoInsuficienteException e) {
 
-
-		}catch(Exception e) {
+		} catch (Exception e) {
 			fail("Se esperaba SaldoInsuficienteException");
 		}
 	}

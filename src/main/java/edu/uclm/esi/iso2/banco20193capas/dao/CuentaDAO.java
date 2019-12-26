@@ -4,6 +4,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import edu.uclm.esi.iso2.banco20193capas.model.Cuenta;
 
-public interface CuentaDAO extends CrudRepository<Cuenta, Long>{
+/**
+ * The Interface CuentaDAO.
+ */
+public interface CuentaDAO extends CrudRepository<Cuenta, Long> {
 
 }

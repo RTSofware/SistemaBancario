@@ -7,57 +7,116 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
- * Representa un movimiento en una cuenta bancaria
- * 
+ * Representa un movimiento en una cuenta bancaria.
  */
 @Entity
 public class MovimientoCuenta {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
+	/**
+	 * Id del movimiento.
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	/**
+	 * Cuenta del movimiento.
+	 */
 	@ManyToOne
 	private Cuenta cuenta;
-	
+
+	/**
+	 * Importe del movimiento.
+	 */
 	private double importe;
+
+	/**
+	 * Concepto del movimiento.
+	 */
 	private String concepto;
-	
+
+	/**
+	 * Crea un movimiento.
+	 */
 	public MovimientoCuenta() {
+		// Crea un movimiento
 	}
 
-	public MovimientoCuenta(Cuenta cuenta, double importe, String concepto) {
-		this.importe = importe;
-		this.concepto = concepto;
-		this.cuenta = cuenta;
+	/**
+	 * Crea un movimiento.
+	 * @param cuentaMovimiento   del movimiento
+	 * @param importeMovimiento  del movimiento
+	 * @param conceptoMovimiento del movimiento
+	 */
+	public MovimientoCuenta(
+			final Cuenta cuentaMovimiento,
+			final double importeMovimiento,
+			final String conceptoMovimiento) {
+		this.importe = importeMovimiento;
+		this.concepto = conceptoMovimiento;
+		this.cuenta = cuentaMovimiento;
 	}
 
+	/**
+	 * Getter del Id.
+	 * @return Id del Movimiento
+	 */
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	/**
+	 * Setter del Id.
+	 * @param identificador Id del Movimiento
+	 */
+	public void setId(final Long identificador) {
+		this.id = identificador;
 	}
 
+	/**
+	 * Getter de la cuenta.
+	 * @return cuenta del Movimiento
+	 */
 	public Cuenta getCuenta() {
 		return cuenta;
 	}
 
-	public void setCuenta(Cuenta cuenta) {
-		this.cuenta = cuenta;
+	/**
+	 * Setter de la cuenta.
+	 * @param cuentaMovi del movimiento
+	 */
+	public void setCuenta(final Cuenta cuentaMovi) {
+		this.cuenta = cuentaMovi;
 	}
 
+	/**
+	 * Getter del Importe.
+	 * @return Importe del Movimiento
+	 */
 	public double getImporte() {
 		return importe;
 	}
 
-	public void setImporte(double importe) {
-		this.importe = importe;
+	/**
+	 * Setter del Importe.
+	 * @param importeMovi Importe del Movimiento
+	 */
+	public void setImporte(final double importeMovi) {
+		this.importe = importeMovi;
 	}
 
+	/**
+	 * Getter del Concepto.
+	 * @return Concepto del Movimiento
+	 */
 	public String getConcepto() {
 		return concepto;
 	}
 
-	public void setConcepto(String concepto) {
-		this.concepto = concepto;
+	/**
+	 * Setter del Concepto.
+	 * @param conceptoMovi Concepto del Movimiento
+	 */
+	public void setConcepto(final String conceptoMovi) {
+		this.concepto = conceptoMovi;
 	}
 }

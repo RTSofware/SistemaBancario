@@ -1,3 +1,6 @@
+/**
+ * Paquete modelo.
+ */
 package edu.uclm.esi.iso2.banco20193capas.model;
 
 import javax.persistence.Column;
@@ -6,61 +9,120 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Clase Cliente.
+ */
 @Entity
 public class Cliente {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	/**
+	 * Identificador del Cliente.
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	/**
+	 * NIF del Cliente.
+	 */
 	@Column(unique = true)
-	protected String nif;
-	
+	private String nif;
+	/**
+	 * Nombre del Cliente.
+	 */
 	private String nombre;
+	/**
+	 * Apellidos del Cliente.
+	 */
 	private String apellidos;
 
-	
-	public Cliente() {
-	}
-	
 	/**
-	 * Crea un cliente 
-	 * @param nif	NIF del cliente
-	 * @param nombre	Nombre del cliente
-	 * @param apellidos	Apellidos del cliente
+	 * Crea un cliente vacio.
 	 */
-	public Cliente(String nif, String nombre, String apellidos) {
-		this.nif = nif;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
+	public Cliente() {
+		// This constructor is intentionally empty.
 	}
 
+	/**
+	 * Crea un cliente.
+	 * @param nifCliente       NIF del cliente
+	 * @param nombreCliente    Nombre del cliente
+	 * @param apellidosCliente Apellidos del cliente
+	 */
+	public Cliente(final String nifCliente,
+			final String nombreCliente,
+			final String apellidosCliente) {
+		this.nif = nifCliente;
+		this.nombre = nombreCliente;
+		this.apellidos = apellidosCliente;
+	}
+
+	/**
+	 * Getter de Id.
+	 * @return id del cliente
+	 */
 	public Long getId() {
 		return id;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+	/**
+	 * Setter de Id.
+	 * @param idCliente id del cliente
+	 */
+	public void setId(final Long idCliente) {
+		this.id = idCliente;
 	}
+
+	/**
+	 * Getter de NIF.
+	 * @return NIF del cliente
+	 */
 	public String getNif() {
 		return nif;
 	}
-	public void setNif(String nif) {
-		this.nif = nif;
+
+	/**
+	 * Setter de NIF.
+	 * @param nifCliente NIF del cliente
+	 */
+	public void setNif(final String nifCliente) {
+		this.nif = nifCliente;
 	}
+
+	/**
+	 * Getter de Nombre.
+	 * @return nombre del cliente
+	 */
 	public String getNombre() {
 		return nombre;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+
+	/**
+	 * Setter de Nombre.
+	 * @param nombreCliente Nombre del cliente
+	 */
+	public void setNombre(final String nombreCliente) {
+		this.nombre = nombreCliente;
 	}
+
+	/**
+	 * Getter de Apellidos.
+	 * @return apellidos del cliente
+	 */
 	public String getApellidos() {
 		return apellidos;
 	}
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
-	
+
 	/**
-	 * Inserta un cliente en la base de datos
+	 * Setter de Apellidos.
+	 * @param apellidosCliente Apellidos del cliente
+	 */
+	public void setApellidos(final String apellidosCliente) {
+		this.apellidos = apellidosCliente;
+	}
+
+	/**
+	 * Inserta un cliente en la base de datos.
 	 */
 	public void insert() {
-		Manager.getClienteDAO().save(this);
+		ManagerHelper.getClienteDAO().save(this);
 	}
 }
