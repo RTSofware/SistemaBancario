@@ -217,11 +217,12 @@ public class Cuenta {
 	 * @return El saldo de la cuenta
 	 */
 	public double getSaldo() {
+		double saldo = 0.0;
 		final List<MovimientoCuenta> listaMovimientos =
 				ManagerHelper.getMovimientoDAO().
 				findByCuentaId(this.id);
-		double saldo = 0.0;
-		for (final MovimientoCuenta movimiento : listaMovimientos) {
+
+		for (MovimientoCuenta movimiento : listaMovimientos) {
 			saldo = saldo + movimiento.getImporte();
 		}
 		return saldo;
@@ -251,6 +252,23 @@ public class Cuenta {
 	}
 
 	/**
+	 * Encontrar titular.
+	 * @param clienteNIF the cliente NIF
+	 * @return true, if successful
+	 */
+	public boolean encontrarTitular(final String clienteNIF) {
+		boolean encontrado = false;
+		for (Cliente titular : this.getTitulares()) {
+			if (titular.getNif().equals(clienteNIF)) {
+				encontrado = true;
+				break;
+			}
+		}
+
+		return encontrado;
+	}
+
+	/**
 	 * Emite una tarjeta de debito asociada a esta cuenta.
 	 * @param nif NIF del cliente para el que se emite la tarjeta
 	 * @return La tarjeta de debito
@@ -260,21 +278,20 @@ public class Cuenta {
 	 *                                      esta cuenta
 	 */
 	public TarjetaDebito emitirTarjetaDebito(final String nif)
-			throws ClienteNoEncontradoException,
+			throws
+			ClienteNoEncontradoException,
 			ClienteNoAutorizadoException {
+		boolean encontrado = false;
+		final Cliente cliente;
+
 		final Optional<Cliente> optCliente =
 				ManagerHelper.getClienteDAO().findByNif(nif);
 		if (!optCliente.isPresent()) {
 			throw new ClienteNoEncontradoException(nif);
 		}
-		final Cliente cliente = optCliente.get();
-		boolean encontrado = false;
-		for (final Cliente titular : this.titulares) {
-			if (titular.getNif().equals(cliente.getNif())) {
-				encontrado = true;
-				break;
-			}
-		}
+		cliente = optCliente.get();
+		encontrado = encontrarTitular(cliente.getNif());
+
 		if (!encontrado) {
 			throw new ClienteNoAutorizadoException(nif, this.id);
 		}
@@ -301,19 +318,18 @@ public class Cuenta {
 			throws
 			ClienteNoEncontradoException,
 			ClienteNoAutorizadoException {
+		boolean encontrado = false;
+		final Cliente cliente;
+
 		final Optional<Cliente> optCliente =
 				ManagerHelper.getClienteDAO().findByNif(nif);
 		if (!optCliente.isPresent()) {
 			throw new ClienteNoEncontradoException(nif);
 		}
-		final Cliente cliente = optCliente.get();
-		boolean encontrado = false;
-		for (final Cliente titular : this.titulares) {
-			if (titular.getNif().equals(cliente.getNif())) {
-				encontrado = true;
-				break;
-			}
-		}
+		
+		cliente = optCliente.get();
+		encontrado = encontrarTitular(cliente.getNif());
+
 		if (!encontrado) {
 			throw new ClienteNoAutorizadoException(nif, this.id);
 		}

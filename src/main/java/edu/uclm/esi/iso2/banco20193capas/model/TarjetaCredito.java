@@ -96,6 +96,8 @@ public class TarjetaCredito extends Tarjeta {
 		final int maxDigitosPin = 3;
 		final int decimalNumber = 10;
 		final int defaultToken = 1234;
+		SecureRandom dado = new SecureRandom();
+		int token = 0;
 
 		comprobar(pin);
 		this.setIntentos(0);
@@ -106,8 +108,7 @@ public class TarjetaCredito extends Tarjeta {
 		if (importe <= 0) {
 			throw new ImporteInvalidoException(importe);
 		}
-		SecureRandom dado = new SecureRandom();
-		int token = 0;
+
 		for (int i = 0; i <= maxDigitosPin; i++) {
 			token = (int) (token + dado.nextInt(decimalNumber)
 			* Math.pow(decimalNumber, i));
@@ -147,7 +148,7 @@ public class TarjetaCredito extends Tarjeta {
 		if (importe <= 0) {
 			throw new ImporteInvalidoException(importe);
 		}
-		MovimientoTarjetaCredito principal =
+		final MovimientoTarjetaCredito principal =
 				new MovimientoTarjetaCredito(this,
 						importe,
 						"Retirada de efectivo");

@@ -57,7 +57,7 @@ public class Cliente {
 
 	/**
 	 * Getter de Id.
-	 * @return id del cliente
+	 * @return ClienteID del cliente
 	 */
 	public Long getId() {
 		return id;
@@ -65,7 +65,7 @@ public class Cliente {
 
 	/**
 	 * Setter de Id.
-	 * @param idCliente id del cliente
+	 * @param idCliente ID del cliente
 	 */
 	public void setId(final Long idCliente) {
 		this.id = idCliente;

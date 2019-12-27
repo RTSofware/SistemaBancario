@@ -15,6 +15,14 @@ public class Compra {
 	private int token;
 
 	/**
+	 * Instantiates a new compra.
+	 */
+	public Compra() {
+		this.importe = 0;
+		this.token = 0;
+	}
+
+	/**
 	 * Crea una compra.
 	 * @param importeCompra Importe de la Compra
 	 * @param tokenCompra   Token de la Compra

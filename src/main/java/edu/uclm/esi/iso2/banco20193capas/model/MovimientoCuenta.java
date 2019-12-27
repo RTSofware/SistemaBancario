@@ -43,22 +43,22 @@ public class MovimientoCuenta {
 
 	/**
 	 * Crea un movimiento.
-	 * @param cuentaMovimiento   del movimiento
-	 * @param importeMovimiento  del movimiento
-	 * @param conceptoMovimiento del movimiento
+	 * @param cuentaM Cuenta del movimiento
+	 * @param importeM  Importe del movimiento
+	 * @param conceptoM Concepto del movimiento
 	 */
 	public MovimientoCuenta(
-			final Cuenta cuentaMovimiento,
-			final double importeMovimiento,
-			final String conceptoMovimiento) {
-		this.importe = importeMovimiento;
-		this.concepto = conceptoMovimiento;
-		this.cuenta = cuentaMovimiento;
+			final Cuenta cuentaM,
+			final double importeM,
+			final String conceptoM) {
+		this.importe = importeM;
+		this.concepto = conceptoM;
+		this.cuenta = cuentaM;
 	}
 
 	/**
 	 * Getter del Id.
-	 * @return Id del Movimiento
+	 * @return id ID del Movimiento
 	 */
 	public Long getId() {
 		return id;

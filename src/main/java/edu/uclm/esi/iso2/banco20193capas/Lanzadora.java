@@ -36,31 +36,16 @@ public class Lanzadora {
 		pepe.insert();
 
 		final Cuenta cuenta = new Cuenta();
+
 		try {
 			cuenta.addTitular(pepe);
-		} catch (CuentaYaCreadaException e) {
-			LOGGER.error("Excepcion no esperada!: "
-		+ e.getMessage());
-		}
-		try {
 			cuenta.insert();
-		} catch (CuentaSinTitularesException e) {
-			LOGGER.error("Excepcion no esperada!: "
-		+ e.getMessage());
-
-		} catch (CuentaYaCreadaException e) {
-			LOGGER.error("Excepcion no esperada!: "
-		+ e.getMessage());
-
-		}
-
-		try {
 			cuenta.ingresar(INGRESO);
-		} catch (ImporteInvalidoException e) {
-			LOGGER.error("Excepcion no esperada!: "
-		+ e.getMessage());
 
+		} catch (CuentaSinTitularesException
+				| CuentaYaCreadaException
+				| ImporteInvalidoException e) {
+			LOGGER.error("Excepcion no esperada!:{} ", e);
 		}
 	}
-
 }
