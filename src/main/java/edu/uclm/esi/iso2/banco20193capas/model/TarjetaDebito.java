@@ -16,6 +16,13 @@ import edu.uclm.esi.iso2.banco20193capas.exceptions.TarjetaBloqueadaException;
 public class TarjetaDebito extends Tarjeta {
 
 	/**
+	 * Crea una tarjeta de debito.
+	 */
+	public TarjetaDebito() {
+		super();
+	}
+
+	/**
 	 * Permite sacar dinero del cajero automatico.
 	 * @param pin     El pin que introduce el usuario
 	 * @param importe El {@code importe} que desea sacar
@@ -69,7 +76,7 @@ public class TarjetaDebito extends Tarjeta {
 
 		comprobar(pin);
 		this.setIntentos(0);
-		SecureRandom dado = new SecureRandom();
+		final SecureRandom dado = new SecureRandom();
 		int token = 0;
 		for (int i = 0; i <= maxDigitosPin; i++) {
 			token = (int) (token + dado.nextInt(decimalNumber)

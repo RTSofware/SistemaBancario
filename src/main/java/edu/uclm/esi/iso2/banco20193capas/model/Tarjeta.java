@@ -34,46 +34,6 @@ public abstract class Tarjeta {
 	private Long id;
 
 	/**
-	 * Gets the intentos.
-	 * @return the intentos
-	 */
-	public Integer getIntentos() {
-		return intentos;
-	}
-
-	/**
-	 * Sets the intentos.
-	 * @param intentosParametro the new intentos
-	 */
-	public void setIntentos(final Integer intentosParametro) {
-		this.intentos = intentosParametro;
-	}
-
-	/**
-	 * Gets the compra.
-	 * @return the compra
-	 */
-	public Compra getCompra() {
-		return compra;
-	}
-
-	/**
-	 * Sets the compra.
-	 * @param compraParametro the new compra
-	 */
-	public void setCompra(final Compra compraParametro) {
-		this.compra = compraParametro;
-	}
-
-	/**
-	 * Gets the activa.
-	 * @return the activa
-	 */
-	public Boolean getActiva() {
-		return activa;
-	}
-
-	/**
 	 * Pin de la Tarjeta.
 	 */
 	private Integer pin;
@@ -120,7 +80,6 @@ public abstract class Tarjeta {
 			pin = (int) (pin + dado.nextInt(decimalNumber)
 			* Math.pow(decimalNumber, i));
 		}
-
 	}
 
 	/**
@@ -134,7 +93,6 @@ public abstract class Tarjeta {
 			throws
 			TarjetaBloqueadaException,
 			PinInvalidoException {
-
 		final int maxIntentos = 3;
 		if (!this.isActiva()) {
 			throw new TarjetaBloqueadaException();
@@ -174,7 +132,7 @@ public abstract class Tarjeta {
 			TarjetaBloqueadaException,
 			PinInvalidoException {
 		if (tokenEntrada != this.compra.getToken()) {
-			this.compra = null;
+			this.compra = new Compra();
 			throw new TokenInvalidoException();
 		}
 		this.comprar(this.pin, this.compra.getImporte());
@@ -187,7 +145,7 @@ public abstract class Tarjeta {
 
 	/**
 	 * Getter de id.
-	 * @return id de la tarjeta
+	 * @return id ID de la tarjeta
 	 */
 	public Long getId() {
 		return id;
@@ -327,4 +285,44 @@ public abstract class Tarjeta {
 	 */
 	public abstract void cambiarPin(int pinViejo, int pinNuevo)
 			throws PinInvalidoException;
+
+	/**
+	 * Gets the intentos.
+	 * @return the intentos
+	 */
+	public Integer getIntentos() {
+		return intentos;
+	}
+
+	/**
+	 * Sets the intentos.
+	 * @param intentosParametro the new intentos
+	 */
+	public void setIntentos(final Integer intentosParametro) {
+		this.intentos = intentosParametro;
+	}
+
+	/**
+	 * Gets the compra.
+	 * @return the compra
+	 */
+	public Compra getCompra() {
+		return compra;
+	}
+
+	/**
+	 * Sets the compra.
+	 * @param compraParametro the new compra
+	 */
+	public void setCompra(final Compra compraParametro) {
+		this.compra = compraParametro;
+	}
+
+	/**
+	 * Gets the activa.
+	 * @return the activa
+	 */
+	public Boolean getActiva() {
+		return activa;
+	}
 }

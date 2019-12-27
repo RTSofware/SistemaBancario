@@ -26,7 +26,7 @@ public final class ManagerHelper {
 	/**
 	 * Movimiento TarjetaCreditoDAO.
 	 */
-	private static MovimientoTarjetaCreditoDAO movimientoTCreditoDAO;
+	private static MovimientoTarjetaCreditoDAO movimientoTCDAO;
 	/**
 	 * ClienteDAO.
 	 */
@@ -49,28 +49,27 @@ public final class ManagerHelper {
 
 	/**
 	 * Carga el DAO.
-	 *
-	 * @param cuentaDaoIn the cuenta dao in
-	 * @param movimientoDaoIn the movimiento dao in
-	 * @param clienteDAOIn the cliente DAO in
-	 * @param movimientoTCDAOIn the movimiento TCDAO in
-	 * @param tarjetaDebitoDAOIn the tarjeta debito DAO in
-	 * @param tarjetaCreditoDAOIn the tarjeta credito DAO in
+	 * @param cuentaIn the cuenta dao in
+	 * @param movimientoIn the movimiento dao in
+	 * @param clienteIn the cliente DAO in
+	 * @param movimientoTCIn the movimiento TCDAO in
+	 * @param tarjetaDebitoIn the tarjeta debito DAO in
+	 * @param tarjetaCreditoIn the tarjeta credito DAO in
 	 */
 	@Autowired
 	private synchronized void loadDAO(
-			final CuentaDAO cuentaDaoIn,
-			final MovimientoCuentaDAO movimientoDaoIn,
-			final ClienteDAO clienteDAOIn,
-			final MovimientoTarjetaCreditoDAO movimientoTCDAOIn,
-			final TarjetaDebitoDAO tarjetaDebitoDAOIn,
-			final TarjetaCreditoDAO tarjetaCreditoDAOIn) {
-		ManagerHelper.cuentaDAO = cuentaDaoIn;
-		ManagerHelper.movimientoDAO = movimientoDaoIn;
-		ManagerHelper.clienteDAO = clienteDAOIn;
-		ManagerHelper.movimientoTCreditoDAO = movimientoTCDAOIn;
-		ManagerHelper.tarjetaDebitoDAO = tarjetaDebitoDAOIn;
-		ManagerHelper.tarjetaCreditoDAO = tarjetaCreditoDAOIn;
+			final CuentaDAO cuentaIn,
+			final MovimientoCuentaDAO movimientoIn,
+			final ClienteDAO clienteIn,
+			final MovimientoTarjetaCreditoDAO movimientoTCIn,
+			final TarjetaDebitoDAO tarjetaDebitoIn,
+			final TarjetaCreditoDAO tarjetaCreditoIn) {
+		ManagerHelper.cuentaDAO = cuentaIn;
+		ManagerHelper.movimientoDAO = movimientoIn;
+		ManagerHelper.clienteDAO = clienteIn;
+		ManagerHelper.movimientoTCDAO = movimientoTCIn;
+		ManagerHelper.tarjetaDebitoDAO = tarjetaDebitoIn;
+		ManagerHelper.tarjetaCreditoDAO = tarjetaCreditoIn;
 	}
 
 	/**
@@ -103,7 +102,7 @@ public final class ManagerHelper {
 	 */
 	public static MovimientoTarjetaCreditoDAO
 	getMovimientoTarjetaCreditoDAO() {
-		return movimientoTCreditoDAO;
+		return movimientoTCDAO;
 	}
 
 	/**

@@ -45,6 +45,9 @@ public class MovimientoTarjetaCredito {
 	 * Crea MovimientoTarjeta.
 	 */
 	public MovimientoTarjetaCredito() {
+		this.importe = 0;
+		this.concepto = "";
+		this.tarjeta = new TarjetaCredito();
 	}
 
 	/**
@@ -64,7 +67,7 @@ public class MovimientoTarjetaCredito {
 
 	/**
 	 * Getter del Id del movimiento.
-	 * @return id del movimiento
+	 * @return id ID del movimiento
 	 */
 	public Long getId() {
 		return id;
@@ -120,10 +123,10 @@ public class MovimientoTarjetaCredito {
 
 	/**
 	 * Setter del concepto.
-	 * @param conceptoMovimiento concepto del movimiento
+	 * @param conceptoM Concepto del movimiento
 	 */
-	public void setConcepto(final String conceptoMovimiento) {
-		this.concepto = conceptoMovimiento;
+	public void setConcepto(final String conceptoM) {
+		this.concepto = conceptoM;
 	}
 
 	/**
@@ -136,10 +139,10 @@ public class MovimientoTarjetaCredito {
 
 	/**
 	 * Setter de liquidado.
-	 * @param liquidadoMovimiento booleanno liquidado
+	 * @param liquidadoM Boolean liquidado
 	 */
 	public void setLiquidado(
-			final boolean liquidadoMovimiento) {
-		this.liquidado = liquidadoMovimiento;
+			final boolean liquidadoM) {
+		this.liquidado = liquidadoM;
 	}
 }
